@@ -1,7 +1,9 @@
+from flask_login import UserMixin
 import sqlite3
 import os
+from . import db_path
 
-def create_database(db_path):
+def create_database():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -16,3 +18,22 @@ def create_database(db_path):
 
     conn.commit()
     conn.close()
+
+class User(UserMixin):
+    def __init__(self, uid, email, password, name):
+        self.id = uid
+        self.email = email
+        self.password = password
+        self.name = name
+
+    @staticmethod
+    def get(user_id):
+        with sqlite3.connect(db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM user WHERE uid = ?;', (user_id,))
+            user = cursor.fetchone()
+            if user:
+                return User(user['uid'], user['email'], user['password'], user['name'])
+            else:
+                return None
