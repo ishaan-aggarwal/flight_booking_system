@@ -2,8 +2,8 @@ import sqlite3
 import os
 
 def create_database(db_path):
-    con = sqlite3.connect(db_path)
-    cursor = con.cursor()
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS user (
@@ -14,5 +14,5 @@ def create_database(db_path):
     );
     ''')
 
-    con.commit()
-    con.close()
+    conn.commit()
+    conn.close()
