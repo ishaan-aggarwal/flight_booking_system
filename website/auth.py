@@ -32,12 +32,17 @@ def sign_up():
         else:
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute('''
-                INSERT INTO user (email, password, name)
-                VALUES (?, ?, ?);
-                ''', (email, generate_password_hash(password1), name))
-                conn.commit()
-            flash('Account created successfully', category='success')
-            return redirect(url_for('auth.login'))
+                cursor.execute('SELECT * FROM user WHERE email = ?;', (email,))
+                existing_user = cursor.fetchone()
+                if existing_user:
+                    flash(f'Account for {email} already exists', category='error')
+                else:
+                    cursor.execute('''
+                    INSERT INTO user (email, password, name)
+                    VALUES (?, ?, ?);
+                    ''', (email, generate_password_hash(password1), name))
+                    conn.commit()
+                    flash('Account created successfully', category='success')
+                    return redirect(url_for('auth.login'))
 
     return render_template('sign_up.html')
