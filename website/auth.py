@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, request, flash, redirect
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
+from . import db_path
 
 auth = Blueprint('auth', __name__)
 
@@ -27,7 +30,14 @@ def sign_up():
         elif len(password1) < 6:
             flash('Password must be at least 6 characters.', category='error')
         else:
+            with sqlite3.connect(db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                INSERT INTO user (email, password, name)
+                VALUES (?, ?, ?);
+                ''', (email, generate_password_hash(password1), name))
+                conn.commit()
             flash('Account created successfully', category='success')
-            pass
+            return redirect(url_for('auth.login'))
 
     return render_template('sign_up.html')
