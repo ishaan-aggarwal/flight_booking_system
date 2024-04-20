@@ -7,6 +7,27 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email or not password:
+            flash('Please fill out all fields.', category='error')
+        else:
+            with sqlite3.connect(db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                cursor.execute('SELECT * FROM user WHERE email = ?;', (email,))
+                existing_user = cursor.fetchone()
+                if existing_user:
+                    if check_password_hash(existing_user['password'], password):
+                        flash('Login successful.', category='success')
+                        return redirect(url_for('views.home'))
+                    else:
+                        flash('Incorrect password. Please try again.', category='error')
+                else:
+                    flash('Account does not exist.', category='error')
+                
     return render_template('login.html')
 
 @auth.route('/logout')
