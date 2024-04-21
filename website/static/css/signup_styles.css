@@ -1,6 +1,6 @@
 body {
   background-color: #f0f0f0;
-  /* background-image: url(./image/sunset_plane.jpeg); */
+  background-image: url(./image/sunset_plane.jpeg);
   background-size: cover;
 }
 
@@ -10,8 +10,6 @@ body {
   align-items: center;
   height: 100vh;
 }
-
-.login-container,
 .signup-container {
   background-color: #fff;
   padding: 20px;
@@ -19,7 +17,6 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
 }
-
 .header {
   background-color: #f5a623;
   height: 70px;
@@ -36,12 +33,9 @@ a {
   display: block;
   margin-bottom: 10px;
 }
-.login-container form,
 .signup-container form {
   margin-top: 20px;
 }
-
-.login-container input,
 .signup-container input {
   display: block;
   width: 100%;
@@ -51,8 +45,6 @@ a {
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-
-.login-container button,
 .signup-container button {
   background-color: #f5a623;
   color: #fff;
@@ -61,8 +53,6 @@ a {
   border-radius: 5px;
   width: 100%;
 }
-
-.login-container button:hover,
 .signup-container button:hover {
   background-color: #e09117;
 }

@@ -13,33 +13,22 @@
         alt="login image"
       />
     </div>
-    <form id="loginForm" action="#">
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-      <a href="/sign-up" id="sign_up">Sign Up</a>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-  <div class="signup-container" style="display: none">
-    <div class="header">
-      <img
-        src="{{url_for('static', filename='images/login_back_circle.png')}}"
-        alt="login image"
-      />
-    </div>
-    <form id="signupForm" action="#">
-      <input type="text" id="name" placeholder="Name" />
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
+    <form id="loginForm" method="POST">
+      <input type="email" id="email" name="email" placeholder="Email" />
       <input
         type="password"
-        id="confirm-password"
-        placeholder="Confirm Password"
+        id="password"
+        name="password"
+        placeholder="Password"
       />
-      <input type="text" id="phone" placeholder="Phone Number" />
-      <button type="submit">Sign up</button>
+      <button type="submit">Login</button>
+      <center>
+        <span>Don't have an account? </span
+        ><a href="/sign-up" id="signup-link" style="display: inline-block"
+          >Sign Up</a
+        >
+      </center>
     </form>
   </div>
 </div>
-<script src="{{url_for('static', filename='js/register.js')}}" />
 {% endblock %}
