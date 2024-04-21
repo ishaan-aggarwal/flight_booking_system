@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+import json
 import sqlite3
+from urllib.parse import quote, unquote
 from .models import User
 from . import db_path
 
@@ -19,7 +21,6 @@ def home():
             JOIN flights AS f ON fd.flight_id = f.flight_id
             WHERE b.user_id = ?
         ''', (current_user.id,))
-
         
         booked_flights = cursor.fetchall()
 
@@ -39,7 +40,7 @@ def booking():
                 cursor = conn.cursor()
                 
                 cursor.execute('''
-                    SELECT f.airline, fd.departure, fd.landing, fd.flight_id, fd.price, fd.available_seats
+                    SELECT fd.detail_id, f.airline, fd.departure, fd.landing, fd.flight_id, fd.price, fd.available_seats
                     FROM flights AS f
                     JOIN flight_details AS fd ON f.flight_id = fd.flight_id
                     WHERE fd.from_destination = ? AND fd.to_destination = ? AND fd.date = ? AND fd.available_seats > 0
@@ -49,6 +50,15 @@ def booking():
                 if not available_flights:
                     flash('Sorry, No flights available.', category='error')
                 else:
-                    pass
+                    # Encode available_flights as JSON and pass it as a URL parameter
+                    available_flights_json = json.dumps([dict(row) for row in available_flights])
+                    return redirect(url_for('views.search_results', available_flights=quote(available_flights_json)))
 
     return render_template('flight_index.html', user=current_user)
+
+@views.route('/search-results', methods=['GET', 'POST'])
+def search_results():
+    available_flights_json = request.args.get('available_flights', None)
+    # Decode the JSON string to a list of dictionaries
+    available_flights = json.loads(unquote(available_flights_json))
+    pass
