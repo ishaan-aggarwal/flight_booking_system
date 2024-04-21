@@ -18,7 +18,7 @@ def create_database():
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS flights (
-        flight_id INTEGER PRIMARY KEY,
+        flight_id TEXT PRIMARY KEY,
         airline TEXT
     );
     ''')
