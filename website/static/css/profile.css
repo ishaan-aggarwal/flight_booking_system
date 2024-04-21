@@ -90,3 +90,21 @@ a {
 .logout-link {
   text-align: right;
 }
+
+.scrollable-table {
+  max-height: 400px; /* Adjust as needed */
+  overflow-y: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+}

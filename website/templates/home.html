@@ -27,8 +27,33 @@
     </div>
     <div class="booked-flights">
       <h2>Booked Flights</h2>
-      <div class="booked-flights_detail">
-        <p>Some detail to display</p>
+      <div class="scrollable-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Airline</th>
+              <th>Date</th>
+              <th>Departure</th>
+              <th>Landing</th>
+              <th>Flight ID</th>
+              <th>From Destination</th>
+              <th>To Destination</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for flight in booked_flights %}
+            <tr>
+              <td>{{ flight['airline'] }}</td>
+              <td>{{ flight['date'] }}</td>
+              <td>{{ flight['departure'] }}</td>
+              <td>{{ flight['landing'] }}</td>
+              <td>{{ flight['flight_id'] }}</td>
+              <td>{{ flight['from_destination'] }}</td>
+              <td>{{ flight['to_destination'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
       <a href="../../flight_index.html" class="book-flight-button"
         >Book Your Flight</a
