@@ -62,15 +62,18 @@ def populate_database():
 
     # Populate booking table
     booking_data = [
-        (1, '6D7932'),
-        (1, 'AI101'),
-        (2, 'SG345'),
-        (2, 'GA456'),
-        (3, 'UK789'),
-        (3, 'AA123'),
-        (3, 'AL456')
+        (1, 1),
+        (1, 2),
+        (2, 3),
+        (2, 4),
+        (3, 5),
+        (3, 6),
+        (3, 7),
+        (3, 8),
+        (3, 9),
+        (3, 10)
     ]
-    cursor.executemany('INSERT INTO booking (user_id, flight_id) VALUES (?, ?)', booking_data)
+    cursor.executemany('INSERT INTO booking (user_id, detail_id) VALUES (?, ?)', booking_data)
 
     conn.commit()
     conn.close()

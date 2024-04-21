@@ -42,9 +42,9 @@ def create_database():
     CREATE TABLE IF NOT EXISTS booking (
         booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
-        flight_id INTEGER,
-        FOREIGN KEY (user_id) REFERENCES user(uid),
-        FOREIGN KEY (flight_id) REFERENCES flight_details(flight_id)
+        detail_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES users(user_id),
+        FOREIGN KEY (detail_id) REFERENCES flight_details(detail_id)
     );
     ''')
 
