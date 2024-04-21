@@ -1,4 +1,11 @@
 {% extends "base.html"%} {% block head %}
+<style type="text/css">
+  body {
+    background-color: #f0f0f0;
+    background-image: url("{{url_for('static', filename="images/sunset_plane.jpeg")}}");
+    background-size: cover;
+  }
+</style>
 <link
   rel="stylesheet"
   type="text/css"
@@ -29,6 +36,19 @@
         >
       </center>
     </form>
+  </div>
+  <div class="navbar">
+    <div class="logo_label">
+      <div class="logo">
+        <img
+          src="{{url_for('static', filename='images/palm-tree.svg')}}"
+          alt="logo image"
+        />
+      </div>
+      <div class="title">
+        <h1>PlanYourTrip</h1>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
