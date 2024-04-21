@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 import sqlite3
 from .models import User
@@ -24,3 +24,15 @@ def home():
         booked_flights = cursor.fetchall()
 
     return render_template('home.html', user=current_user, booked_flights=booked_flights)
+
+@views.route('/booking', methods=['GET', 'POST'])
+def booking():
+    if request.method == 'POST':
+        to_dest = request.form.get('TO')
+        from_dest = request.form.get('FROM')
+        date = request.form.get('travel_date')
+        if not to_dest or not from_dest or not date:
+            flash('Please fill out all fields.', category='error')
+        else:
+            pass
+    return render_template('flight_index.html', user=current_user)
