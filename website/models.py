@@ -1,6 +1,5 @@
 from flask_login import UserMixin
 import sqlite3
-import os
 from . import db_path
 
 def create_database():
@@ -14,6 +13,38 @@ def create_database():
         password TEXT,
         name TEXT,
         contact TEXT
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS flights (
+        flight_id INTEGER PRIMARY KEY,
+        airline TEXT
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS flight_details (
+        detail_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        flight_id INTEGER,
+        date DATE,
+        departure TIME,
+        landing TIME,
+        price REAL,
+        available_seats INTEGER,
+        from_destination TEXT,
+        to_destination TEXT,
+        FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
+    );
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS booking (
+        booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        flight_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES user(uid),
+        FOREIGN KEY (flight_id) REFERENCES flight_details(flight_id)
     );
     ''')
 
