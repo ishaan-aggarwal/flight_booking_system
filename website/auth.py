@@ -25,7 +25,7 @@ def login():
                 if existing_user:
                     if check_password_hash(existing_user['password'], password):
                         flash('Logged in successfully!', category='success')
-                        user_obj = User(existing_user['uid'], existing_user['email'], existing_user['password'], existing_user['name'])
+                        user_obj = User(existing_user['uid'], existing_user['email'], existing_user['password'], existing_user['name'], existing_user['contact'])
                         login_user(user_obj, remember=True)
                         return redirect(url_for('views.home'))
                     else:
@@ -47,10 +47,11 @@ def sign_up():
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
+        contact = request.form.get('contact')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        if not name or not email or not password1 or not password2:
+        if not name or not email or not contact or not password1 or not password2:
             flash('Please fill out all fields.', category='error')
         elif len(email) < 4:
             flash('Email must be at least 4 characters.', category='error')
@@ -58,6 +59,8 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 6:
             flash('Password must be at least 6 characters.', category='error')
+        elif len(contact) < 10:
+            flash('Invalid contact number.', category='error')
         else:
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
@@ -67,9 +70,9 @@ def sign_up():
                     flash(f'Account for {email} already exists', category='error')
                 else:
                     cursor.execute('''
-                    INSERT INTO user (email, password, name)
-                    VALUES (?, ?, ?);
-                    ''', (email, generate_password_hash(password1), name))
+                    INSERT INTO user (email, password, name, contact)
+                    VALUES (?, ?, ?, ?);
+                    ''', (email, generate_password_hash(password1), name, contact))
                     conn.commit()
                     flash('Account created successfully', category='success')
                     return redirect(url_for('auth.login'))

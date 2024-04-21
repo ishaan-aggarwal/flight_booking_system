@@ -12,7 +12,8 @@ def create_database():
         uid INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE,
         password TEXT,
-        name TEXT
+        name TEXT,
+        contact TEXT
     );
     ''')
 
@@ -20,11 +21,12 @@ def create_database():
     conn.close()
 
 class User(UserMixin):
-    def __init__(self, uid, email, password, name):
+    def __init__(self, uid, email, password, name, contact):
         self.id = uid
         self.email = email
         self.password = password
         self.name = name
+        self.contact = contact
 
     @staticmethod
     def get(user_id):
@@ -34,6 +36,6 @@ class User(UserMixin):
             cursor.execute('SELECT * FROM user WHERE uid = ?;', (user_id,))
             user = cursor.fetchone()
             if user:
-                return User(user['uid'], user['email'], user['password'], user['name'])
+                return User(user['uid'], user['email'], user['password'], user['name'], user['contact'])
             else:
                 return None
