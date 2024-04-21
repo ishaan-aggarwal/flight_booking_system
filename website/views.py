@@ -34,5 +34,21 @@ def booking():
         if not to_dest or not from_dest or not date:
             flash('Please fill out all fields.', category='error')
         else:
-            pass
+            with sqlite3.connect(db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                
+                cursor.execute('''
+                    SELECT f.airline, fd.departure, fd.landing, fd.flight_id, fd.price, fd.available_seats
+                    FROM flights AS f
+                    JOIN flight_details AS fd ON f.flight_id = fd.flight_id
+                    WHERE fd.from_destination = ? AND fd.to_destination = ? AND fd.date = ? AND fd.available_seats > 0
+                ''', (from_dest, to_dest, date))
+                
+                available_flights = cursor.fetchall()
+                if not available_flights:
+                    flash('Sorry, No flights available.', category='error')
+                else:
+                    pass
+
     return render_template('flight_index.html', user=current_user)
