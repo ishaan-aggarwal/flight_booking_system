@@ -50,15 +50,53 @@ def booking():
                 if not available_flights:
                     flash('Sorry, No flights available.', category='error')
                 else:
-                    # Encode available_flights as JSON and pass it as a URL parameter
+                    # Encode available_flights and search_params as JSON
                     available_flights_json = json.dumps([dict(row) for row in available_flights])
-                    return redirect(url_for('views.search_results', available_flights=quote(available_flights_json)))
+                    search_params = json.dumps({"to_dest": to_dest, "from_dest": from_dest, "date": date})
+                    
+                    # Pass as query parameters
+                    return redirect(url_for('views.search_results',  user=current_user, available_flights=quote(available_flights_json), search_params=quote(search_params)))
 
     return render_template('flight_index.html', user=current_user)
 
 @views.route('/search-results', methods=['GET', 'POST'])
 def search_results():
     available_flights_json = request.args.get('available_flights', None)
-    # Decode the JSON string to a list of dictionaries
+    search_params_json = request.args.get('search_params', None)
+    
+    # Decode the JSON strings
     available_flights = json.loads(unquote(available_flights_json))
-    pass
+    search_params = json.loads(unquote(search_params_json))
+    
+    to_dest = search_params["to_dest"]
+    from_dest = search_params["from_dest"]
+    date = search_params["date"]
+
+    if request.method == 'POST':
+        detail_id = request.form.get('detail_id')
+        if not detail_id:
+            flash('Please select a flight to book.', category='error')
+        else:
+            with sqlite3.connect(db_path) as conn:
+                try:
+                    conn.execute('BEGIN TRANSACTION')
+                    
+                    conn.execute('''
+                        INSERT INTO booking (user_id, detail_id) VALUES (?, ?)
+                    ''', (current_user.id, detail_id))
+                    
+                    conn.execute('''
+                        UPDATE flight_details SET available_seats = available_seats - 1 WHERE detail_id = ?
+                    ''', (detail_id,))
+                    
+                    conn.execute('COMMIT')
+                    
+                    flash('Flight booked successfully!', category='success')
+                    return redirect(url_for('views.home', user=current_user))
+                
+                except Exception as e:
+                    conn.execute('ROLLBACK')
+                    flash('Error occurred while booking the flight.', category='error')
+                    return redirect(url_for('views.search_results'))
+
+    return render_template('flight_check.html', available_flights=available_flights, user=current_user)
