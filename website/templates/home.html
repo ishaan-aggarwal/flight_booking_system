@@ -1,4 +1,11 @@
 {% extends "base.html"%} {% block head %}
+<style type="text/css">
+  body {
+    background-color: #f0f0f0;
+    background-image: url("{{url_for('static', filename="images/sunset_plane.jpeg")}}");
+    background-size: cover;
+  }
+</style>
 <link
   rel="stylesheet"
   type="text/css"
@@ -9,6 +16,8 @@
   <div class="profile-container">
     <div class="header">
       <h1>PROFILE</h1>
+    </div>
+    <div class="logout-link">
       <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
     </div>
     <div class="profile-info">

@@ -1,9 +1,3 @@
-/* body {
-  background-color: #f0f0f0;
-  background-image: url(../image/sunset_plane.jpeg);
-  background-size: cover;
-} */
-
 .parent {
   display: flex;
   justify-content: center;
@@ -91,4 +85,8 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.logout-link {
+  text-align: right;
 }
