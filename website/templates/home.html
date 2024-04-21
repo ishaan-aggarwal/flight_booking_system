@@ -1,0 +1,30 @@
+{% extends "base.html"%} {% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{url_for('static', filename='css/profile.css')}}"
+/>
+{% endblock%} {% block title %}Profile{% endblock%} {% block content%}
+<div class="parent">
+  <div class="profile-container">
+    <div class="header">
+      <h1>PROFILE</h1>
+      <a href="{{ url_for('auth.logout') }}" class="logout-link">Logout</a>
+    </div>
+    <div class="profile-info">
+      <p><span>Name:</span> {{user['name']}}</p>
+      <p><span>Email:</span> {{user['email']}}</p>
+      <p><span>Contact Details: </span>{{user['contact']}}</p>
+    </div>
+    <div class="booked-flights">
+      <h2>Booked Flights</h2>
+      <div class="booked-flights_detail">
+        <p>Some detail to display</p>
+      </div>
+      <a href="../../flight_index.html" class="book-flight-button"
+        >Book Your Flight</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}
