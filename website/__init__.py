@@ -13,8 +13,10 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     from .models import create_database, User
+    from .db_utils import populate_database
     if not os.path.exists(db_path):
         create_database()
+        populate_database()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
