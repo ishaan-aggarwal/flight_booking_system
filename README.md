@@ -11,6 +11,8 @@ This project is a flight booking system that allows users to search and book fli
 
 ## Demo
 
+https://github.com/ishaan-aggarwal/flight_booking_system/assets/154077101/67f85801-5f86-42bf-a934-370781dfa377
+
 ## Tech Stack
 
 **Client:** HTML, CSS
